@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <h1>Icon Generator for PWA</h1>
+    <p>This page generates various sized icons from the base image.</p>
+    
+    <canvas id="canvas"></canvas>
+    
+    <script>
+        // Create icons in various sizes
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const canvas = document.getElementById('canvas');
+        
+        // Create a gradient-based icon programmatically
+        function createIcon(size) {
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw clipboard shape
+            const padding = size * 0.15;
+            const clipboardWidth = size * 0.7;
+            const clipboardHeight = size * 0.85;
+            const x = (size - clipboardWidth) / 2;
+            const y = (size - clipboardHeight) / 2 + padding;
+            
+            // Clipboard background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(x, y, clipboardWidth, clipboardHeight);
+            
+            // Clipboard clip
+            const clipWidth = size * 0.3;
+            const clipHeight = size * 0.15;
+            ctx.fillStyle = '#764ba2';
+            ctx.fillRect((size - clipWidth) / 2, y - clipHeight / 2, clipWidth, clipHeight);
+            
+            // Checkmarks
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = size * 0.05;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            // Draw 3 checkmarks
+            const checkY = [y + size * 0.15, y + size * 0.4, y + size * 0.65];
+            
+            checkY.forEach(checkPos => {
+                ctx.beginPath();
+                ctx.moveTo(x + size * 0.1, checkPos);
+                ctx.lineTo(x + size * 0.2, checkPos + size * 0.08);
+                ctx.lineTo(x + size * 0.35, checkPos - size * 0.08);
+                ctx.stroke();
+            });
+            
+            // Download icon
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `icon-${size}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+        
+        // Generate all sizes
+        sizes.forEach(size => {
+            setTimeout(() => createIcon(size), sizes.indexOf(size) * 500);
+        });
+    </script>
+</body>
+</html>

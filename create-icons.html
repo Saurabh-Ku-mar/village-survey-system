@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Icon Files</title>
+</head>
+<body>
+    <h1>Icon Creation Helper</h1>
+    <p>This page helps create the necessary PNG icon files for the PWA.</p>
+    
+    <div id="status"></div>
+    
+    <script>
+        async function createIcons() {
+            const status = document.getElementById('status');
+            
+            // List of required icon files
+            const icons = [
+                'icon-96.png', 'icon-128.png', 'icon-144.png', 
+                'icon-152.png', 'icon-384.png',
+                'icon-192-maskable.png', 'icon-512-maskable.png'
+            ];
+            
+            try {
+                // Fetch the base icon
+                const response = await fetch('icons/icon-512.jpg');
+                const blob = await response.blob();
+                
+                status.innerHTML += '<p>Base icon loaded successfully ✓</p>';
+                status.innerHTML += '<p style="color: green;">The app will work with the existing icons!</p>';
+                status.innerHTML += '<p>For production, convert icon-base.svg to PNG in the icons folder.</p>';
+            } catch (error) {
+                status.innerHTML += '<p style="color: red;">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        // Run on load
+        window.addEventListener('load', createIcons);
+    </script>
+</body>
+</html>

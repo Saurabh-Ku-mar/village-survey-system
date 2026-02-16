@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1e3a5f">
+    <title>Login - Village Family Survey System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .login-title {
+            font-size: 24px;
+            color: #1e3a5f;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="password"],
+        input[type="text"] {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle .toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+        }
+
+        input[type="password"] {
+            padding-right: 40px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-signup {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+        }
+
+        .btn-signup:hover {
+            background: #e0e0e0;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 13px;
+            padding: 10px;
+            background: #ffebee;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            color: #388e3c;
+            font-size: 13px;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            color: #1e3a5f;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+        }
+
+        .btn-danger {
+            background: #d32f2f;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-danger:hover {
+            background: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-logo">📋</div>
+            <h1 class="login-title">Village Survey</h1>
+            <p class="login-subtitle">Family Management System</p>
+        </div>
+
+        <div class="error-message" id="errorMsg"></div>
+        <div class="success-message" id="successMsg"></div>
+
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-toggle">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                    >
+                    <button type="button" class="toggle-btn" id="togglePassword">👁️</button>
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Remember me</label>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-login">Login</button>
+                <button type="button" class="btn-signup" id="setupBtn">First Setup</button>
+            </div>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #999;">
+            <p>Offline-first application • Works without internet</p>
+        </div>
+    </div>
+
+    <!-- Setup Modal -->
+    <div class="modal" id="setupModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Initial Setup</h2>
+            <p style="color: #666; margin-bottom: 20px; font-size: 14px;">
+                Create a password to protect your survey data. This password will be required every time you open the application.
+            </p>
+
+            <div style="display: none;" id="setupSuccess">
+                <div class="success-message show">
+                    ✓ Setup completed successfully! Please login with your password.
+                </div>
+            </div>
+
+            <form id="setupForm" style="display: none;" class="login-form">
+                <div class="form-group">
+                    <label for="setupPassword">Create Password</label>
+                    <div class="password-toggle">
+                        <input 
+                            type="password" 
+                            id="setupPassword" 
+                            placeholder="At least 6 characters"
+                            required
+                        >
+                        <button type="button" class="toggle-btn" onclick="togglePassword('setupPassword')">👁️</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="setupPasswordConfirm">Confirm Password</label>
+                    <div class="password-toggle">
+                        <input 
+                            type="password" 
+                            id="setupPasswordConfirm" 
+                            placeholder="Confirm your password"
+                            required
+                        >
+                        <button type="button" class="toggle-btn" onclick="togglePassword('setupPasswordConfirm')">👁️</button>
+                    </div>
+                </div>
+
+                <div style="color: #d32f2f; font-size: 13px; margin-bottom: 15px; display: none;" id="setupError"></div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" id="cancelSetup">Cancel</button>
+                    <button type="submit" class="btn-login">Create Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete All Data Modal -->
+    <div class="modal" id="deleteDataModal">
+        <div class="modal-content">
+            <h2 class="modal-title" style="color: #d32f2f;">⚠️ Delete All Data</h2>
+            <p style="color: #666; margin-bottom: 20px; font-size: 14px;">
+                This action will permanently delete all your survey data and reset the application. This cannot be undone.
+            </p>
+
+            <div class="form-group">
+                <label for="deletePassword">Enter password to confirm:</label>
+                <input type="password" id="deletePassword" placeholder="Enter your password">
+            </div>
+
+            <div style="color: #d32f2f; font-size: 13px; margin-bottom: 15px; display: none;" id="deleteError"></div>
+
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel" id="cancelDelete">Cancel</button>
+                <button type="button" class="btn-danger" id="confirmDelete">Delete All Data</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="db.js"></script>
+    <script>
+        // Initialize auth system
+        const authSystem = new AuthSystem();
+
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', (e) => {
+            e.preventDefault();
+            togglePassword('password');
+        });
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            const btn = event.target;
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (btn) btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                if (btn) btn.textContent = '👁️';
+            }
+        }
+
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            if (!password) {
+                showError('Please enter your password');
+                return;
+            }
+
+            const result = await authSystem.login(password, rememberMe);
+            if (result.success) {
+                showSuccess('Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } else {
+                showError(result.message);
+            }
+        });
+
+        // Setup button
+        document.getElementById('setupBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const isSetup = await authSystem.isSetup();
+            if (isSetup) {
+                showError('System already initialized. Please login or reset your data.');
+            } else {
+                document.getElementById('setupModal').classList.add('show');
+                document.getElementById('setupForm').style.display = 'block';
+                document.getElementById('setupSuccess').style.display = 'none';
+            }
+        });
+
+        // Setup form
+        document.getElementById('setupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const pwd = document.getElementById('setupPassword').value;
+            const pwdConfirm = document.getElementById('setupPasswordConfirm').value;
+            const errorDiv = document.getElementById('setupError');
+
+            errorDiv.style.display = 'none';
+
+            if (pwd.length < 6) {
+                errorDiv.textContent = 'Password must be at least 6 characters';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (pwd !== pwdConfirm) {
+                errorDiv.textContent = 'Passwords do not match';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const result = await authSystem.setup(pwd);
+            if (result.success) {
+                document.getElementById('setupForm').style.display = 'none';
+                document.getElementById('setupSuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('setupModal').classList.remove('show');
+                    document.getElementById('password').focus();
+                }, 2000);
+            } else {
+                errorDiv.textContent = result.message;
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        // Cancel setup
+        document.getElementById('cancelSetup').addEventListener('click', () => {
+            document.getElementById('setupModal').classList.remove('show');
+        });
+
+        // Show error message
+        function showError(msg) {
+            const el = document.getElementById('errorMsg');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 5000);
+        }
+
+        function showSuccess(msg) {
+            const el = document.getElementById('successMsg');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 5000);
+        }
+
+        // Check if already logged in
+        window.addEventListener('load', async () => {
+            const isLoggedIn = localStorage.getItem('vfs_auth');
+            if (isLoggedIn) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
